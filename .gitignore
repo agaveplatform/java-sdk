@@ -2,7 +2,6 @@
 target
 *~
 
-
 # Intellij metadata files
 *.idea
 *.ids
@@ -30,12 +29,3 @@ Icon
 # Files that might appear on external disk
 .Spotlight-V100
 .Trashes
-
-# fabric deployment files
-fabfile.py
-fabfile.pyc
-
-# maven and eclipse malformed output test folders
-test-output
-cache
-config/ssl
