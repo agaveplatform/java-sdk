@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.models;
 
@@ -17,6 +17,11 @@ public class JobResubmitActionBuilder
      */
     public JobResubmitActionBuilder() {
         jobResubmitAction = new JobResubmitAction();
+    }
+
+    public JobResubmitActionBuilder action(JobActionTypeEnum action) {
+        jobResubmitAction.setAction(action);
+        return this;
     }
     /**
      * Build the instance with the given values

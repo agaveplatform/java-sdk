@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client;
 
@@ -72,8 +72,7 @@ public class APIHelper {
     /**
      * JSON Serialization of a given object.
      * @param	obj		The object to serialize into JSON
-     * @return	The		serialized Json string representation of the given object
-     */
+     * @return	The		serialized Json string representation of the given object */
     public static String serialize(Object obj)
             throws JsonProcessingException {
         if(null == obj)
@@ -86,8 +85,7 @@ public class APIHelper {
      * JSON Deserialization of the given json string.
      * @param	json	The json string to deserialize
      * @param	<T>	The type of the object to deserialize into
-     * @return	The deserialized object
-     */
+     * @return	The deserialized object */
     public static <T extends Object> T deserialize(String json, TypeReference<T> typeReference)
             throws IOException {
         if (isNullOrWhiteSpace(json))
@@ -100,8 +98,7 @@ public class APIHelper {
      * JSON Deserialization of the given json string.
      * @param	jParser The json parser for reading json to deserialize
      * @param	<T>	The type of the object to deserialize into
-     * @return	The deserialized object
-     */
+     * @return	The deserialized object */
     public static <T extends Object> T deserialize(JsonParser jParser, Class<T> typeReference)
             throws IOException {
         if ((null == jParser) || (jParser.isClosed()))
@@ -113,8 +110,7 @@ public class APIHelper {
     /**
      * JSON Deserialization of the given json string.
      * @param	json	The json string to deserialize
-     * @return	The deserialized json as a Map
-     */
+     * @return	The deserialized json as a Map */
     public static LinkedHashMap<String, Object> deserialize(String json)
             throws IOException {
         if (isNullOrWhiteSpace(json))
@@ -128,8 +124,7 @@ public class APIHelper {
     /**
      * Replaces template parameters in the given url
      * @param	queryBuilder    The query string builder to replace the template parameters
-     * @param	parameters	The parameters to replace in the url
-     */
+     * @param	parameters	The parameters to replace in the url */
     public static void appendUrlWithTemplateParameters(StringBuilder queryBuilder, Map<String, Object> parameters) {
         //perform parameter validation
         if (null == queryBuilder)
@@ -158,8 +153,7 @@ public class APIHelper {
     /**
      * Appends the given set of parameters to the given query string
      * @param	queryBuilder	The query url string to append the parameters
-     * @param	parameters	The parameters to append
-     */
+     * @param	parameters	The parameters to append */
     public static void appendUrlWithQueryParameters(StringBuilder queryBuilder, Map<String, Object> parameters) {
         //perform parameter validation
         if (null == queryBuilder)
@@ -179,8 +173,7 @@ public class APIHelper {
     /**
      * Validates if the string is null, empty or whitespace
      * @param	s	The string to validate
-     * @return	The result of validation
-     */
+     * @return	The result of validation */
     public static boolean isNullOrWhiteSpace(String s) {
         if(s == null)
             return true;
@@ -201,8 +194,7 @@ public class APIHelper {
      * Replaces all occurrences of the given string in the string builder
      * @param	stringBuilder The string builder to update with replaced strings
      * @param 	toReplace The string to replace in the string builder
-     * @param	replaceWith   The string to replace with
-     */
+     * @param	replaceWith   The string to replace with */
     public static void replaceAll(StringBuilder stringBuilder, String toReplace, String replaceWith) {
         int index = stringBuilder.indexOf(toReplace);
         
@@ -225,8 +217,7 @@ public class APIHelper {
     /**
      * Validates and processes the given Url
      * @param    url The given Url to process
-     * @return   Pre-process Url as string
-     */
+     * @return   Pre-process Url as string */
     public static String cleanUrl(StringBuilder url)
     {
         //ensure that the urls are absolute
@@ -249,8 +240,7 @@ public class APIHelper {
     /**
      * Prepares Array style form fields from a given array of values
      * @param 	value	Value for the form fields
-     * @return	Dictionary of form fields created from array elements
-     */
+     * @return	Dictionary of form fields created from array elements */
     public static Map<String, Object> prepareFormFields(Object value) {
         Map<String, Object> formFields = new LinkedHashMap<String, Object>();
         if(value != null) {
@@ -304,8 +294,7 @@ public class APIHelper {
      * @param   array	Array of elements to flatten
      * @param   fmt Format string to use for array flattening
      * @param	separator	Separator to use for string concat
-     * @return	Representative string made up of array elements
-     */
+     * @return	Representative string made up of array elements */
     private static String flattenCollection(String elemName, Collection<?> array, String fmt, char separator) {
         StringBuilder builder = new StringBuilder();
 
@@ -476,6 +465,6 @@ public class APIHelper {
      * @return true if the given class is an autoboxed class e.g., Integer
      */
     private static boolean isWrapperType(Class clazz) {
-        return WRAPPER_TYPES.contains(clazz) || clazz.isPrimitive() || clazz.isEnum();
+        return WRAPPER_TYPES.contains(clazz) || clazz.isPrimitive();
     }
 }

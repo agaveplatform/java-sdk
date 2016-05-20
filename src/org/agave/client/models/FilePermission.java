@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.models;
 
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class FilePermission 
         extends PermissionModel {
-    private static final long serialVersionUID = 5022020168153225721L;
+    private static final long serialVersionUID = 5449007267110482186L;
     private FilePermissionStanza permission;
     private Boolean recursive = false;
     /** GETTER

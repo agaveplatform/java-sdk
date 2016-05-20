@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.models;
 
@@ -80,6 +80,11 @@ public class ExecutionSystemBuilder
      */
     public ExecutionSystemBuilder startupScript(String startupScript) {
         executionSystem.setStartupScript(startupScript);
+        return this;
+    }
+
+    public ExecutionSystemBuilder type(SystemTypeEnum type) {
+        executionSystem.setType(type);
         return this;
     }
 

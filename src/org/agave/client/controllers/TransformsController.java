@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.controllers;
 
@@ -20,32 +20,29 @@ import org.agave.client.http.client.APICallBack;
 import org.agave.client.*;
 import org.agave.client.models.*;
 
-public class TransformsController extends BaseController {    
-    //private static variables for the singleton pattern
-    private static Object syncObject = new Object();
-    private static TransformsController instance = null;
+public class TransformsController extends BaseController {
+    /**
+     * Initialize the base controller using the given http client
+     */
+    public TransformsController() {
+        super();
+    }
 
     /**
-     * Singleton pattern implementation 
-     * @return The singleton instance of the TransformsController class 
-     */
-    public static TransformsController getInstance() {
-        synchronized (syncObject) {
-            if (null == instance) {
-                instance = new TransformsController();
-            }
-        }
-        return instance;
+     * Initialize the base controller using the given http client
+     *
+     * @param _client The given http client */
+    public TransformsController(HttpClient _client) {
+        super(_client);
     }
 
     /**
      * Find the transform of the given uuid
      * @param    transformId    Required parameter: The name of the transform requested.
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the Transform response from the API call*/
     public void getTransformAsync(
-                final String transformId,
-                final APICallBack<Transform> callBack
+            final String transformId,
+            final APICallBack<Transform> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -56,14 +53,14 @@ public class TransformsController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4921019575355823231L;
+            private static final long serialVersionUID = 5749534528261001210L;
             {
                     put( "transformId", transformId );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5443048920401313766L;
+            private static final long serialVersionUID = 5142137603240472022L;
             {
                     put( "naked", true );
             }});
@@ -72,7 +69,7 @@ public class TransformsController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5104483433461065205L;
+            private static final long serialVersionUID = 5103539733994470169L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -81,22 +78,19 @@ public class TransformsController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().get(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.get(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             Transform result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -133,14 +127,13 @@ public class TransformsController extends BaseController {
      * @param    owner    Required parameter: The name of the api user owning the file at the given path.
      * @param    path    Required parameter: The path to the file to be transformed and staged
      * @param    transformId    Required parameter: The name of the transform to apply to the given file.
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the Transform response from the API call*/
     public void createAsyncTransformAsync(
-                final TransformRequest body,
-                final String owner,
-                final String path,
-                final String transformId,
-                final APICallBack<Transform> callBack
+            final TransformRequest body,
+            final String owner,
+            final String path,
+            final String transformId,
+            final APICallBack<Transform> callBack
     ) throws JsonProcessingException {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -151,7 +144,7 @@ public class TransformsController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5682345319742319410L;
+            private static final long serialVersionUID = 5081493147057791685L;
             {
                     put( "owner", owner );
                     put( "path", path );
@@ -160,7 +153,7 @@ public class TransformsController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5354462673069970543L;
+            private static final long serialVersionUID = 5339705462330921905L;
             {
                     put( "naked", true );
             }});
@@ -169,7 +162,7 @@ public class TransformsController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4850046144446638814L;
+            private static final long serialVersionUID = 4760744920746044846L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -179,22 +172,19 @@ public class TransformsController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().postBody(queryUrl, headers, APIHelper.serialize(body));
+        final HttpRequest request = clientInstance.postBody(queryUrl, headers, APIHelper.serialize(body));
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             Transform result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -231,14 +221,13 @@ public class TransformsController extends BaseController {
      * @param    owner    Required parameter: The name of the api user owning the file at the given path.
      * @param    path    Required parameter: The path to the file to be transformed and downloaded.
      * @param    transformId    Required parameter: The name of the transform to apply to the given file.
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the InputStream response from the API call*/
     public void createSyncTransformAsync(
-                final TransformRequest body,
-                final String owner,
-                final String path,
-                final String transformId,
-                final APICallBack<InputStream> callBack
+            final TransformRequest body,
+            final String owner,
+            final String path,
+            final String transformId,
+            final APICallBack<InputStream> callBack
     ) throws JsonProcessingException {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -249,7 +238,7 @@ public class TransformsController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5098155570590619181L;
+            private static final long serialVersionUID = 4718055185788310839L;
             {
                     put( "owner", owner );
                     put( "path", path );
@@ -258,7 +247,7 @@ public class TransformsController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4985804728107059482L;
+            private static final long serialVersionUID = 5580158242374162238L;
             {
                     put( "naked", true );
             }});
@@ -267,7 +256,7 @@ public class TransformsController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5063530958576381268L;
+            private static final long serialVersionUID = 5294028022513708014L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "content-type", "application/json; charset=utf-8" );
@@ -276,22 +265,19 @@ public class TransformsController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().postBody(queryUrl, headers, APIHelper.serialize(body));
+        final HttpRequest request = clientInstance.postBody(queryUrl, headers, APIHelper.serialize(body));
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsBinaryAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsBinaryAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             InputStream result = response.getRawBody();
@@ -324,15 +310,14 @@ public class TransformsController extends BaseController {
      * @param    offset    Optional parameter: The number of results skipped in the result set returned from this query
      * @param    tags    Optional parameter: One or more tags of the transform
      * @param    version    Optional parameter: The name of the transform
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the List<Transform> response from the API call*/
     public void listTransformsAsync(
-                final Integer limit,
-                final String name,
-                final Integer offset,
-                final String tags,
-                final String version,
-                final APICallBack<List<Transform>> callBack
+            final Integer limit,
+            final String name,
+            final Integer offset,
+            final String tags,
+            final String version,
+            final APICallBack<List<Transform>> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -343,7 +328,7 @@ public class TransformsController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5091802433744499762L;
+            private static final long serialVersionUID = 4734276225482121033L;
             {
                     put( "naked", true );
                     put( "limit", (null != limit) ? limit : 100 );
@@ -357,7 +342,7 @@ public class TransformsController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5407786983568151345L;
+            private static final long serialVersionUID = 5063272296031287855L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -366,22 +351,19 @@ public class TransformsController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().get(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.get(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             List<Transform> result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),

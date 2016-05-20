@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.models;
 
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class ExecutionSystem 
         extends System {
-    private static final long serialVersionUID = 5092005674730657133L;
+    private static final long serialVersionUID = 4983618627803554134L;
     private SystemExecutionTypeEnum executionType;
     private SystemLoginConfig login;
     private Integer maxSystemJobs;

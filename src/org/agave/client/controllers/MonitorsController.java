@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.controllers;
 
@@ -20,32 +20,29 @@ import org.agave.client.http.client.APICallBack;
 import org.agave.client.*;
 import org.agave.client.models.*;
 
-public class MonitorsController extends BaseController {    
-    //private static variables for the singleton pattern
-    private static Object syncObject = new Object();
-    private static MonitorsController instance = null;
+public class MonitorsController extends BaseController {
+    /**
+     * Initialize the base controller using the given http client
+     */
+    public MonitorsController() {
+        super();
+    }
 
     /**
-     * Singleton pattern implementation 
-     * @return The singleton instance of the MonitorsController class 
-     */
-    public static MonitorsController getInstance() {
-        synchronized (syncObject) {
-            if (null == instance) {
-                instance = new MonitorsController();
-            }
-        }
-        return instance;
+     * Initialize the base controller using the given http client
+     *
+     * @param _client The given http client */
+    public MonitorsController(HttpClient _client) {
+        super(_client);
     }
 
     /**
      * Add a new monitoring task
      * @param    body    Required parameter: The description of the monitoring task to run
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the MonitoringTaskDetails response from the API call*/
     public void addMonitoringTasksAsync(
-                final MonitoringTaskSummary body,
-                final APICallBack<MonitoringTaskDetails> callBack
+            final MonitoringTaskSummary body,
+            final APICallBack<MonitoringTaskDetails> callBack
     ) throws JsonProcessingException {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -56,7 +53,7 @@ public class MonitorsController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5068782822069436180L;
+            private static final long serialVersionUID = 5205312193205183004L;
             {
                     put( "naked", true );
             }});
@@ -65,7 +62,7 @@ public class MonitorsController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4651143193226683100L;
+            private static final long serialVersionUID = 4691785654755943968L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -75,34 +72,31 @@ public class MonitorsController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().postBody(queryUrl, headers, APIHelper.serialize(body));
+        final HttpRequest request = clientInstance.postBody(queryUrl, headers, APIHelper.serialize(body));
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user supplies an invalid form", context);
+                                throw new APIException("Raised if a user supplies an invalid form", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to save the monitor.", context);
+                                throw new APIException("The service was unable to save the monitor.", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             MonitoringTaskDetails result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -136,11 +130,10 @@ public class MonitorsController extends BaseController {
     /**
      * Retrieve a specific monitor.
      * @param    monitorId    Required parameter: The id of the monitor
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the MonitoringTaskDetails response from the API call*/
     public void getMonitoringTaskAsync(
-                final String monitorId,
-                final APICallBack<MonitoringTaskDetails> callBack
+            final String monitorId,
+            final APICallBack<MonitoringTaskDetails> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -151,14 +144,14 @@ public class MonitorsController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5047346276362687651L;
+            private static final long serialVersionUID = 4642130549008987302L;
             {
                     put( "monitorId", monitorId );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5413711396303337835L;
+            private static final long serialVersionUID = 5333911668755082139L;
             {
                     put( "naked", true );
             }});
@@ -167,7 +160,7 @@ public class MonitorsController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4907089027835842797L;
+            private static final long serialVersionUID = 5731726984214629372L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -176,37 +169,34 @@ public class MonitorsController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().get(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.get(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user does not supply a UUID", context);
+                                throw new APIException("Raised if a user does not supply a UUID", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 404)
-                                throw new APIException("The specified Monitor cannot be found", context);
+                                throw new APIException("The specified Monitor cannot be found", 404, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to process the request.", context);
+                                throw new APIException("The service was unable to process the request.", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             MonitoringTaskDetails result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -241,12 +231,11 @@ public class MonitorsController extends BaseController {
      * Updates an existing monitor.
      * @param    body    Required parameter: The description of the app to add or update. This can be either a file upload or json posted to the request body.
      * @param    monitorId    Required parameter: The id of the monitor to update
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the MonitoringTaskDetails response from the API call*/
     public void updateMonitoringTaskAsync(
-                final MonitoringTaskSummary body,
-                final String monitorId,
-                final APICallBack<MonitoringTaskDetails> callBack
+            final MonitoringTaskSummary body,
+            final String monitorId,
+            final APICallBack<MonitoringTaskDetails> callBack
     ) throws JsonProcessingException {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -257,14 +246,14 @@ public class MonitorsController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4705779430090467961L;
+            private static final long serialVersionUID = 5641854949776007235L;
             {
                     put( "monitorId", monitorId );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5177268673932039250L;
+            private static final long serialVersionUID = 4816385183992524853L;
             {
                     put( "naked", true );
             }});
@@ -273,7 +262,7 @@ public class MonitorsController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5402892814154152039L;
+            private static final long serialVersionUID = 5659487489739272489L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -283,34 +272,31 @@ public class MonitorsController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().postBody(queryUrl, headers, APIHelper.serialize(body));
+        final HttpRequest request = clientInstance.postBody(queryUrl, headers, APIHelper.serialize(body));
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user supplies an invalid form", context);
+                                throw new APIException("Raised if a user supplies an invalid form", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to process the request.", context);
+                                throw new APIException("The service was unable to process the request.", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             MonitoringTaskDetails result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -344,11 +330,10 @@ public class MonitorsController extends BaseController {
     /**
      * Deletes a monitor.
      * @param    monitorId    Required parameter: The id of the monitor to delete
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the void response from the API call*/
     public void deleteMonitoringTaskAsync(
-                final String monitorId,
-                final APICallBack<Object> callBack
+            final String monitorId,
+            final APICallBack<Object> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -359,14 +344,14 @@ public class MonitorsController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4842282862354497229L;
+            private static final long serialVersionUID = 5231880133251303080L;
             {
                     put( "monitorId", monitorId );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5231240942222766767L;
+            private static final long serialVersionUID = 5087759106673745329L;
             {
                     put( "naked", true );
             }});
@@ -375,7 +360,7 @@ public class MonitorsController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4882636772429989850L;
+            private static final long serialVersionUID = 5308814316435586257L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "Authorization", String.format("Bearer %1$s", Configuration.oAuthAccessToken) );
@@ -383,34 +368,31 @@ public class MonitorsController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().delete(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.delete(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user supplies no UUID", context);
+                                throw new APIException("Raised if a user supplies no UUID", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to process the request.", context);
+                                throw new APIException("The service was unable to process the request.", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //let the caller know of the success
                             callBack.onSuccess(context, context);
@@ -442,16 +424,15 @@ public class MonitorsController extends BaseController {
      * @param    offset    Optional parameter: The number of records to when returning the results. When paginating results, the page number = ceil(offset/limit)
      * @param    result    Optional parameter: A timestamp indicating the latest time of the first monitor check in ISO 8601 format
      * @param    startDate    Optional parameter: A timestamp indicating the earliest time of the first monitor check in ISO 8601 format
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the List<MonitoringTaskCheck> response from the API call*/
     public void listMonitoringTaskChecksAsync(
-                final String monitorId,
-                final String endDate,
-                final Integer limit,
-                final Integer offset,
-                final MonitorCheckResultTypeEnum result,
-                final String startDate,
-                final APICallBack<List<MonitoringTaskCheck>> callBack
+            final String monitorId,
+            final String endDate,
+            final Integer limit,
+            final Integer offset,
+            final MonitorCheckResultTypeEnum result,
+            final String startDate,
+            final APICallBack<List<MonitoringTaskCheck>> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -462,14 +443,14 @@ public class MonitorsController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4965994466640333925L;
+            private static final long serialVersionUID = 4679232681803533692L;
             {
                     put( "monitorId", monitorId );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5417540280344889913L;
+            private static final long serialVersionUID = 5406004417943951951L;
             {
                     put( "naked", true );
                     put( "endDate", endDate );
@@ -483,7 +464,7 @@ public class MonitorsController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5467529142842681461L;
+            private static final long serialVersionUID = 5382147128663930714L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -492,37 +473,34 @@ public class MonitorsController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().get(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.get(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user does not supply a UUID or supplies an invalid JSON query", context);
+                                throw new APIException("Raised if a user does not supply a UUID or supplies an invalid JSON query", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 404)
-                                throw new APIException("The specified Monitor cannot be found", context);
+                                throw new APIException("The specified Monitor cannot be found", 404, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to process the request.", context);
+                                throw new APIException("The service was unable to process the request.", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             List<MonitoringTaskCheck> result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -556,11 +534,10 @@ public class MonitorsController extends BaseController {
     /**
      * Forces a monitor check to run.
      * @param    monitorId    Required parameter: The id of the monitor
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the MonitoringTaskDetails response from the API call*/
     public void createForceMonitoringTaskCheckAsync(
-                final String monitorId,
-                final APICallBack<MonitoringTaskDetails> callBack
+            final String monitorId,
+            final APICallBack<MonitoringTaskDetails> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -571,14 +548,14 @@ public class MonitorsController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5088324652865488865L;
+            private static final long serialVersionUID = 5629620123770413973L;
             {
                     put( "monitorId", monitorId );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5587798351804666062L;
+            private static final long serialVersionUID = 5457829992428303253L;
             {
                     put( "naked", true );
             }});
@@ -587,7 +564,7 @@ public class MonitorsController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5004005445540934401L;
+            private static final long serialVersionUID = 5495579343853895494L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -596,34 +573,31 @@ public class MonitorsController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().post(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.post(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user supplies an invalid form", context);
+                                throw new APIException("Raised if a user supplies an invalid form", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to process the request.", context);
+                                throw new APIException("The service was unable to process the request.", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             MonitoringTaskDetails result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -658,12 +632,11 @@ public class MonitorsController extends BaseController {
      * Retrieve a specific monitor check
      * @param    checkId    Required parameter: The id of the monitor check
      * @param    monitorId    Required parameter: The id of the monitor
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the MonitoringTaskCheck response from the API call*/
     public void getMonitoringTaskCheckAsync(
-                final String checkId,
-                final String monitorId,
-                final APICallBack<MonitoringTaskCheck> callBack
+            final String checkId,
+            final String monitorId,
+            final APICallBack<MonitoringTaskCheck> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -674,7 +647,7 @@ public class MonitorsController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4668091038459655763L;
+            private static final long serialVersionUID = 5154730955873139633L;
             {
                     put( "checkId", checkId );
                     put( "monitorId", monitorId );
@@ -682,7 +655,7 @@ public class MonitorsController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5143371096474452480L;
+            private static final long serialVersionUID = 5517463585376440293L;
             {
                     put( "naked", true );
             }});
@@ -691,7 +664,7 @@ public class MonitorsController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4764305337986378605L;
+            private static final long serialVersionUID = 4783536691178792017L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -700,37 +673,34 @@ public class MonitorsController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().get(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.get(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user does not supply a UUID", context);
+                                throw new APIException("Raised if a user does not supply a UUID", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 404)
-                                throw new APIException("The specified Monitor cannot be found", context);
+                                throw new APIException("The specified Monitor cannot be found", 404, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to process the request.", context);
+                                throw new APIException("The service was unable to process the request.", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             MonitoringTaskCheck result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -767,14 +737,13 @@ public class MonitorsController extends BaseController {
      * @param    limit    Optional parameter: The maximum number of results returned from this query
      * @param    offset    Optional parameter: The number of results skipped in the result set returned from this query
      * @param    target    Optional parameter: The target system to search for.
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the List<MonitoringTaskSummary> response from the API call*/
     public void listMonitoringTasksAsync(
-                final String active,
-                final Integer limit,
-                final Integer offset,
-                final String target,
-                final APICallBack<List<MonitoringTaskSummary>> callBack
+            final String active,
+            final Integer limit,
+            final Integer offset,
+            final String target,
+            final APICallBack<List<MonitoringTaskSummary>> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -785,7 +754,7 @@ public class MonitorsController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4747330171118631289L;
+            private static final long serialVersionUID = 5581697844523778470L;
             {
                     put( "naked", true );
                     put( "active", (null != active) ? active : "true" );
@@ -798,7 +767,7 @@ public class MonitorsController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4948261488190829504L;
+            private static final long serialVersionUID = 4688165178150040146L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -807,37 +776,34 @@ public class MonitorsController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().get(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.get(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user does not supply a UUID or supplies an invalid JSON query", context);
+                                throw new APIException("Raised if a user does not supply a UUID or supplies an invalid JSON query", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 404)
-                                throw new APIException("The specified Monitor cannot be found", context);
+                                throw new APIException("The specified Monitor cannot be found", 404, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to process the request.", context);
+                                throw new APIException("The service was unable to process the request.", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             List<MonitoringTaskSummary> result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),

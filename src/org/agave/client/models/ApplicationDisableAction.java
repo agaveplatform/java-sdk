@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.models;
 
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class ApplicationDisableAction 
         extends ApplicationAction {
-    private static final long serialVersionUID = 5432357013732702781L;
+    private static final long serialVersionUID = 5042786935546510650L;
     private ApplicationActionTypeEnum action = ApplicationActionTypeEnum.fromString("DISABLE");
     /** GETTER
      * TODO: Write general description for this method

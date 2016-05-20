@@ -1,10 +1,9 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client;
-
 public class Configuration {
     //The base Uri for API calls
     public static String baseUri = "https://agave.iplantc.org";

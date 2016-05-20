@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.http.client;
 
@@ -33,7 +33,7 @@ public class UnirestClient implements HttpClient {
     public static HttpClient getSharedInstance() {
         synchronized (synRoot) {
             if(sharedInstance == null){
-                sharedInstance = new UnirestClient();
+            	sharedInstance = new UnirestClient();
             }
             return sharedInstance;
         }
@@ -143,7 +143,7 @@ public class UnirestClient implements HttpClient {
         else
         {
             httpResponse = new HttpResponse(response.getStatus(), response.getHeaders().getFlatHeaders(),
-                    response.getRawBody(), response.getBaseRequest());
+            		response.getRawBody(), response.getBaseRequest());
         }
 
         return httpResponse;

@@ -1,13 +1,11 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client;
 
 import java.io.InputStream;
-
-import org.agave.client.http.client.HttpContext;
 
 public class APIException extends Exception {
     //UID for serialization
@@ -17,20 +15,31 @@ public class APIException extends Exception {
     private int responseCode;
 
     //private fields
-    private HttpContext httpContext;
+    private InputStream rawBody;
 
     /**
     * The HTTP response code from the API request
     */
     public int getResponseCode() {
-        return (httpContext != null) ? httpContext.getResponse().getStatusCode() : -1;
+        return responseCode;
     }
 
     /**
      * The HTTP response body from the API request
      */
-    public HttpContext getHttpContext() {
-        return httpContext;
+    public InputStream getRawBody() {
+        return rawBody;
+    }
+
+    /**
+    * Initialization constructor
+    * @param	reason	The reason for throwing exception
+    * @param	code	The HTTP response code from the API request
+    */
+    public APIException(String reason, int code, InputStream body) {
+        super(reason);
+        this.responseCode = code;
+        this.rawBody = body;
     }
 
     /**
@@ -39,15 +48,5 @@ public class APIException extends Exception {
      */
     public APIException(String reason) {
         super(reason);
-    }
-
-    /**
-     * Initialization constructor
-     * @param	reason	The reason for throwing exception
-     * @param	context	The http context of the API exception
-     */
-    public APIException(String reason, HttpContext context) {
-        super(reason);
-        this.httpContext = context;
     }
 }

@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.models;
 
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class JobInputs 
         implements java.io.Serializable {
-    private static final long serialVersionUID = 4799938697110260107L;
+    private static final long serialVersionUID = 4662413769635507345L;
     private String parameter1;
     /** GETTER
      * One or more inputs identified in the description of the app you're running. 

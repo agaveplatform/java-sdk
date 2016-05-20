@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.http.response;
 
@@ -15,7 +15,7 @@ public class HttpResponse {
     int statusCode;
     Map<String, String> headers;
     InputStream rawBody;
-	HttpRequestBase baseRequest;    
+	HttpRequestBase baseRequest;	
     /**
      * HTTP Status code of the http response
      */
@@ -63,8 +63,8 @@ public class HttpResponse {
      * Shutdowns any pending http resources e.g., input streams and realses connection
      */
     public void shutdown(){
-        if(baseRequest != null) {
-            baseRequest.releaseConnection();
-        }
+    	if(baseRequest != null) {
+    		baseRequest.releaseConnection();
+    	}
     }
 }

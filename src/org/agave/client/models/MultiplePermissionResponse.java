@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.models;
 
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class MultiplePermissionResponse 
         implements java.io.Serializable {
-    private static final long serialVersionUID = 5594788241245158963L;
+    private static final long serialVersionUID = 5588851264573006425L;
     private String message;
     private List<FilePermission> result;
     private String status;

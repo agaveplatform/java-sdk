@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.models;
 
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class System 
         implements java.io.Serializable {
-    private static final long serialVersionUID = 4670114983329187299L;
+    private static final long serialVersionUID = 5496400537776666867L;
     private String description;
     private String environment;
     private String id;

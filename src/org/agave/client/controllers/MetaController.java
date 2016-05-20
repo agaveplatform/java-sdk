@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.controllers;
 
@@ -20,22 +20,20 @@ import org.agave.client.http.client.APICallBack;
 import org.agave.client.*;
 import org.agave.client.models.*;
 
-public class MetaController extends BaseController {    
-    //private static variables for the singleton pattern
-    private static Object syncObject = new Object();
-    private static MetaController instance = null;
+public class MetaController extends BaseController {
+    /**
+     * Initialize the base controller using the given http client
+     */
+    public MetaController() {
+        super();
+    }
 
     /**
-     * Singleton pattern implementation 
-     * @return The singleton instance of the MetaController class 
-     */
-    public static MetaController getInstance() {
-        synchronized (syncObject) {
-            if (null == instance) {
-                instance = new MetaController();
-            }
-        }
-        return instance;
+     * Initialize the base controller using the given http client
+     *
+     * @param _client The given http client */
+    public MetaController(HttpClient _client) {
+        super(_client);
     }
 
     /**
@@ -43,13 +41,12 @@ public class MetaController extends BaseController {
      * @param    q    Required parameter: The query to perform. Traditional MongoDB queries are supported
      * @param    limit    Optional parameter: The maximum number of results returned from this query
      * @param    offset    Optional parameter: The number of results skipped in the result set returned from this query
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the List<Metadata> response from the API call*/
     public void listMetadataAsync(
-                final String q,
-                final Integer limit,
-                final Integer offset,
-                final APICallBack<List<Metadata>> callBack
+            final String q,
+            final Integer limit,
+            final Integer offset,
+            final APICallBack<List<Metadata>> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -60,7 +57,7 @@ public class MetaController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5126791648150379172L;
+            private static final long serialVersionUID = 5660872899002309067L;
             {
                     put( "naked", true );
                     put( "q", q );
@@ -72,7 +69,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4903593243813960109L;
+            private static final long serialVersionUID = 5638805301799212230L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -81,37 +78,34 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().get(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.get(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user does not supply a UUID or supplies an invalid JSON query", context);
+                                throw new APIException("Raised if a user does not supply a UUID or supplies an invalid JSON query", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 404)
-                                throw new APIException("The specified metadata cannot be found", context);
+                                throw new APIException("The specified metadata cannot be found", 404, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata database", context);
+                                throw new APIException("The service was unable to query the metadata database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             List<Metadata> result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -145,11 +139,10 @@ public class MetaController extends BaseController {
     /**
      * Update or Add new Metadata.
      * @param    body    Required parameter: The metadata to add.
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the Metadata response from the API call*/
     public void addMetadataAsync(
-                final Metadata body,
-                final APICallBack<Metadata> callBack
+            final Metadata body,
+            final APICallBack<Metadata> callBack
     ) throws JsonProcessingException {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -160,7 +153,7 @@ public class MetaController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5497474181762083134L;
+            private static final long serialVersionUID = 5657790504985805860L;
             {
                     put( "naked", true );
             }});
@@ -169,7 +162,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5687306223038636300L;
+            private static final long serialVersionUID = 4671178983713869965L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -179,34 +172,31 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().postBody(queryUrl, headers, APIHelper.serialize(body));
+        final HttpRequest request = clientInstance.postBody(queryUrl, headers, APIHelper.serialize(body));
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user supplies an invalid form", context);
+                                throw new APIException("Raised if a user supplies an invalid form", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata database", context);
+                                throw new APIException("The service was unable to query the metadata database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             Metadata result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -240,11 +230,10 @@ public class MetaController extends BaseController {
     /**
      * Retrieve Metadata.
      * @param    uuid    Required parameter: The uuid of the metadata item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the Metadata response from the API call*/
     public void getMetadataAsync(
-                final String uuid,
-                final APICallBack<Metadata> callBack
+            final String uuid,
+            final APICallBack<Metadata> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -255,14 +244,14 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4956548300247304141L;
+            private static final long serialVersionUID = 4637109227229378889L;
             {
                     put( "uuid", uuid );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4874734922367030727L;
+            private static final long serialVersionUID = 5491731687294488696L;
             {
                     put( "naked", true );
             }});
@@ -271,7 +260,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4903618290404819362L;
+            private static final long serialVersionUID = 5189275953545361088L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -280,37 +269,34 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().get(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.get(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user does not supply a UUID", context);
+                                throw new APIException("Raised if a user does not supply a UUID", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 404)
-                                throw new APIException("The specified metadata cannot be found", context);
+                                throw new APIException("The specified metadata cannot be found", 404, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata database", context);
+                                throw new APIException("The service was unable to query the metadata database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             Metadata result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -345,12 +331,11 @@ public class MetaController extends BaseController {
      * Update or Add new Metadata.
      * @param    body    Required parameter: The metadata to update.
      * @param    uuid    Required parameter: The uuid of the metadata item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the Metadata response from the API call*/
     public void updateMetadataAsync(
-                final Metadata body,
-                final String uuid,
-                final APICallBack<Metadata> callBack
+            final Metadata body,
+            final String uuid,
+            final APICallBack<Metadata> callBack
     ) throws JsonProcessingException {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -361,14 +346,14 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5413945225685883658L;
+            private static final long serialVersionUID = 4852841663911815328L;
             {
                     put( "uuid", uuid );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5744315286518582865L;
+            private static final long serialVersionUID = 5572877546445556271L;
             {
                     put( "naked", true );
             }});
@@ -377,7 +362,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5637509934901781414L;
+            private static final long serialVersionUID = 5373097019524554162L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -387,34 +372,31 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().postBody(queryUrl, headers, APIHelper.serialize(body));
+        final HttpRequest request = clientInstance.postBody(queryUrl, headers, APIHelper.serialize(body));
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user supplies an invalid form", context);
+                                throw new APIException("Raised if a user supplies an invalid form", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata database", context);
+                                throw new APIException("The service was unable to query the metadata database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             Metadata result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -448,11 +430,10 @@ public class MetaController extends BaseController {
     /**
      * Remove Metadata from the system.
      * @param    uuid    Required parameter: The uuid of the metadata item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the void response from the API call*/
     public void deleteMetadataAsync(
-                final String uuid,
-                final APICallBack<Object> callBack
+            final String uuid,
+            final APICallBack<Object> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -463,14 +444,14 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5724417004569410221L;
+            private static final long serialVersionUID = 4732792627396971760L;
             {
                     put( "uuid", uuid );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5692794711992318541L;
+            private static final long serialVersionUID = 5469634942993731115L;
             {
                     put( "naked", true );
             }});
@@ -479,7 +460,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4676298049047630722L;
+            private static final long serialVersionUID = 5621648226789243551L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "Authorization", String.format("Bearer %1$s", Configuration.oAuthAccessToken) );
@@ -487,34 +468,31 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().delete(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.delete(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user supplies no UUID", context);
+                                throw new APIException("Raised if a user supplies no UUID", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata database", context);
+                                throw new APIException("The service was unable to query the metadata database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //let the caller know of the success
                             callBack.onSuccess(context, context);
@@ -541,11 +519,10 @@ public class MetaController extends BaseController {
     /**
      * Add a new Metadata Schema.
      * @param    body    Required parameter: A valid JSON Schema object
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the MetadataSchema response from the API call*/
     public void addMetadataSchemaAsync(
-                final MetadataSchema body,
-                final APICallBack<MetadataSchema> callBack
+            final MetadataSchema body,
+            final APICallBack<MetadataSchema> callBack
     ) throws JsonProcessingException {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -556,7 +533,7 @@ public class MetaController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4782084031932444079L;
+            private static final long serialVersionUID = 5716867861954645596L;
             {
                     put( "naked", true );
             }});
@@ -565,7 +542,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5356385441983218654L;
+            private static final long serialVersionUID = 5731925502739156510L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -575,34 +552,31 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().postBody(queryUrl, headers, APIHelper.serialize(body));
+        final HttpRequest request = clientInstance.postBody(queryUrl, headers, APIHelper.serialize(body));
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user supplies an invalid form or JSON schema", context);
+                                throw new APIException("Raised if a user supplies an invalid form or JSON schema", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the schema database", context);
+                                throw new APIException("The service was unable to query the schema database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             MetadataSchema result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -637,12 +611,11 @@ public class MetaController extends BaseController {
      * Update an existing Metadata Schema.
      * @param    body    Required parameter: A valid JSON Schema object
      * @param    uuid    Required parameter: The uuid of the metadata schema item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the MetadataSchema response from the API call*/
     public void updateMetadataSchemaAsync(
-                final PermissionModel body,
-                final String uuid,
-                final APICallBack<MetadataSchema> callBack
+            final PermissionModel body,
+            final String uuid,
+            final APICallBack<MetadataSchema> callBack
     ) throws JsonProcessingException {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -653,14 +626,14 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5203278878715964487L;
+            private static final long serialVersionUID = 4825232748940608693L;
             {
                     put( "uuid", uuid );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5528548765427063322L;
+            private static final long serialVersionUID = 4839938381262602524L;
             {
                     put( "naked", true );
             }});
@@ -669,7 +642,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5042165950423128498L;
+            private static final long serialVersionUID = 5508012298363622321L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -679,34 +652,31 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().postBody(queryUrl, headers, APIHelper.serialize(body));
+        final HttpRequest request = clientInstance.postBody(queryUrl, headers, APIHelper.serialize(body));
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user supplies an invalid form or JSON schema", context);
+                                throw new APIException("Raised if a user supplies an invalid form or JSON schema", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the schema database", context);
+                                throw new APIException("The service was unable to query the schema database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             MetadataSchema result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -740,11 +710,10 @@ public class MetaController extends BaseController {
     /**
      * Remove Metadata Schema from the system.
      * @param    uuid    Required parameter: The uuid of the metadata schema item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the void response from the API call*/
     public void deleteMetadataSchemaAsync(
-                final String uuid,
-                final APICallBack<Object> callBack
+            final String uuid,
+            final APICallBack<Object> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -755,14 +724,14 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4783645361157763083L;
+            private static final long serialVersionUID = 4873316260266831137L;
             {
                     put( "uuid", uuid );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5031947254553652789L;
+            private static final long serialVersionUID = 5678537225462512790L;
             {
                     put( "naked", true );
             }});
@@ -771,7 +740,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4707068016082308123L;
+            private static final long serialVersionUID = 4711198753122546858L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "Authorization", String.format("Bearer %1$s", Configuration.oAuthAccessToken) );
@@ -779,34 +748,31 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().delete(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.delete(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user does not supply a Schema UUID", context);
+                                throw new APIException("Raised if a user does not supply a Schema UUID", 400, response.getRawBody());
 
                             else if (responseCode == 401)
-                                throw new APIException("Raised if the user is not authorized.", context);
+                                throw new APIException("Raised if the user is not authorized.", 401, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the schema database", context);
+                                throw new APIException("The service was unable to query the schema database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //let the caller know of the success
                             callBack.onSuccess(context, context);
@@ -835,13 +801,12 @@ public class MetaController extends BaseController {
      * @param    uuid    Required parameter: The uuid of the metadata item
      * @param    limit    Optional parameter: The maximum number of results returned from this query
      * @param    offset    Optional parameter: The number of results skipped in the result set returned from this query
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the PermissionModel response from the API call*/
     public void listMetadataPermissionsAsync(
-                final String uuid,
-                final Integer limit,
-                final Integer offset,
-                final APICallBack<PermissionModel> callBack
+            final String uuid,
+            final Integer limit,
+            final Integer offset,
+            final APICallBack<PermissionModel> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -852,14 +817,14 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5322142028224580762L;
+            private static final long serialVersionUID = 4621570644732332244L;
             {
                     put( "uuid", uuid );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5441227089947557584L;
+            private static final long serialVersionUID = 5516878029496889421L;
             {
                     put( "naked", true );
                     put( "limit", (null != limit) ? limit : 100 );
@@ -870,7 +835,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5438643443831256414L;
+            private static final long serialVersionUID = 4777016654800470481L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -879,34 +844,31 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().get(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.get(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a metadata UUID is not supplied or is invalid.", context);
+                                throw new APIException("Raised if a metadata UUID is not supplied or is invalid.", 400, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified metadata.", context);
+                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified metadata.", 403, response.getRawBody());
 
                             else if (responseCode == 404)
-                                throw new APIException("The specified metadata cannot be found", context);
+                                throw new APIException("The specified metadata cannot be found", 404, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata database", context);
+                                throw new APIException("The service was unable to query the metadata database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             PermissionModel result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -941,12 +903,11 @@ public class MetaController extends BaseController {
      * Add a user permission for the given metadata.
      * @param    body    Required parameter: The metadata permission to update.
      * @param    uuid    Required parameter: The uuid of the metadata item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the PermissionModel response from the API call*/
     public void addMetadataPermissionAsync(
-                final PermissionModel body,
-                final String uuid,
-                final APICallBack<PermissionModel> callBack
+            final PermissionModel body,
+            final String uuid,
+            final APICallBack<PermissionModel> callBack
     ) throws JsonProcessingException {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -957,14 +918,14 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4855187105382029442L;
+            private static final long serialVersionUID = 5243780768194970459L;
             {
                     put( "uuid", uuid );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5387634418947186259L;
+            private static final long serialVersionUID = 4636742458198303333L;
             {
                     put( "naked", true );
             }});
@@ -973,7 +934,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4716175102139487658L;
+            private static final long serialVersionUID = 5047405300276918161L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -983,34 +944,31 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().postBody(queryUrl, headers, APIHelper.serialize(body));
+        final HttpRequest request = clientInstance.postBody(queryUrl, headers, APIHelper.serialize(body));
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a valid metadata UUID is not supplied or if the form is invalid.", context);
+                                throw new APIException("Raised if a valid metadata UUID is not supplied or if the form is invalid.", 400, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified metadata.", context);
+                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified metadata.", 403, response.getRawBody());
 
                             else if (responseCode == 404)
-                                throw new APIException("The specified user cannot be found", context);
+                                throw new APIException("The specified user cannot be found", 404, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata database", context);
+                                throw new APIException("The service was unable to query the metadata database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             PermissionModel result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -1044,11 +1002,10 @@ public class MetaController extends BaseController {
     /**
      * Deletes all permissions on the given metadata.
      * @param    uuid    Required parameter: The uuid of the metadata item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the void response from the API call*/
     public void deleteClearMetadataPermissionsAsync(
-                final String uuid,
-                final APICallBack<Object> callBack
+            final String uuid,
+            final APICallBack<Object> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -1059,14 +1016,14 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5436373610047766852L;
+            private static final long serialVersionUID = 5227660229784129711L;
             {
                     put( "uuid", uuid );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5513585468402107050L;
+            private static final long serialVersionUID = 5485556277843854449L;
             {
                     put( "naked", true );
             }});
@@ -1075,7 +1032,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4662741571614629825L;
+            private static final long serialVersionUID = 5230326461321213788L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "Authorization", String.format("Bearer %1$s", Configuration.oAuthAccessToken) );
@@ -1083,31 +1040,28 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().delete(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.delete(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a metadata UUID is not supplied or is invalid.", context);
+                                throw new APIException("Raised if a metadata UUID is not supplied or is invalid.", 400, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified metadata.", context);
+                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified metadata.", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata database", context);
+                                throw new APIException("The service was unable to query the metadata database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //let the caller know of the success
                             callBack.onSuccess(context, context);
@@ -1135,12 +1089,11 @@ public class MetaController extends BaseController {
      * Get the user permission for this metadata.
      * @param    username    Required parameter: The username of the permission owner
      * @param    uuid    Required parameter: The uuid of the metadata item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the PermissionModel response from the API call*/
     public void getMetadataPermissionAsync(
-                final String username,
-                final String uuid,
-                final APICallBack<PermissionModel> callBack
+            final String username,
+            final String uuid,
+            final APICallBack<PermissionModel> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -1151,7 +1104,7 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5136400798336781178L;
+            private static final long serialVersionUID = 4909110738267551091L;
             {
                     put( "username", username );
                     put( "uuid", uuid );
@@ -1159,7 +1112,7 @@ public class MetaController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5084289777774791501L;
+            private static final long serialVersionUID = 5452036927440278711L;
             {
                     put( "naked", true );
             }});
@@ -1168,7 +1121,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5586453867421805425L;
+            private static final long serialVersionUID = 5108548834663969184L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -1177,34 +1130,31 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().get(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.get(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a metadata UUID is not supplied or is invalid.", context);
+                                throw new APIException("Raised if a metadata UUID is not supplied or is invalid.", 400, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified metadata.", context);
+                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified metadata.", 403, response.getRawBody());
 
                             else if (responseCode == 404)
-                                throw new APIException("The specified metadata cannot be found", context);
+                                throw new APIException("The specified metadata cannot be found", 404, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata database", context);
+                                throw new APIException("The service was unable to query the metadata database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             PermissionModel result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -1240,13 +1190,12 @@ public class MetaController extends BaseController {
      * @param    body    Required parameter: The metadata permission to update.
      * @param    username    Required parameter: The username of the permission owner
      * @param    uuid    Required parameter: The uuid of the metadata item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the PermissionModel response from the API call*/
     public void updateMetadataPermissionAsync(
-                final PermissionModel body,
-                final String username,
-                final String uuid,
-                final APICallBack<PermissionModel> callBack
+            final PermissionModel body,
+            final String username,
+            final String uuid,
+            final APICallBack<PermissionModel> callBack
     ) throws JsonProcessingException {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -1257,7 +1206,7 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5299591459802069325L;
+            private static final long serialVersionUID = 5491896417929337955L;
             {
                     put( "username", username );
                     put( "uuid", uuid );
@@ -1265,7 +1214,7 @@ public class MetaController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5392846415373606940L;
+            private static final long serialVersionUID = 5089503427724618009L;
             {
                     put( "naked", true );
             }});
@@ -1274,7 +1223,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5662773688818351410L;
+            private static final long serialVersionUID = 5476760591674969731L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -1284,34 +1233,31 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().postBody(queryUrl, headers, APIHelper.serialize(body));
+        final HttpRequest request = clientInstance.postBody(queryUrl, headers, APIHelper.serialize(body));
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a valid metadata UUID is not supplied or if the form is invalid.", context);
+                                throw new APIException("Raised if a valid metadata UUID is not supplied or if the form is invalid.", 400, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified metadata.", context);
+                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified metadata.", 403, response.getRawBody());
 
                             else if (responseCode == 404)
-                                throw new APIException("The specified user cannot be found", context);
+                                throw new APIException("The specified user cannot be found", 404, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata database", context);
+                                throw new APIException("The service was unable to query the metadata database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             PermissionModel result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -1346,12 +1292,11 @@ public class MetaController extends BaseController {
      * Removes user permissions for a user on a given metadata resource.
      * @param    username    Required parameter: The username of the permission owner
      * @param    uuid    Required parameter: The uuid of the metadata item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the void response from the API call*/
     public void deleteMetadataPermissionAsync(
-                final String username,
-                final String uuid,
-                final APICallBack<Object> callBack
+            final String username,
+            final String uuid,
+            final APICallBack<Object> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -1362,7 +1307,7 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4956718727735195302L;
+            private static final long serialVersionUID = 4841639356678051715L;
             {
                     put( "username", username );
                     put( "uuid", uuid );
@@ -1370,7 +1315,7 @@ public class MetaController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5526217116065143873L;
+            private static final long serialVersionUID = 4764007841472598087L;
             {
                     put( "naked", true );
             }});
@@ -1379,7 +1324,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4950336515962586014L;
+            private static final long serialVersionUID = 5331893984544062778L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "Authorization", String.format("Bearer %1$s", Configuration.oAuthAccessToken) );
@@ -1387,31 +1332,28 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().delete(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.delete(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a metadata UUID is not supplied or is invalid.", context);
+                                throw new APIException("Raised if a metadata UUID is not supplied or is invalid.", 400, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified metadata.", context);
+                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified metadata.", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata database", context);
+                                throw new APIException("The service was unable to query the metadata database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //let the caller know of the success
                             callBack.onSuccess(context, context);
@@ -1440,13 +1382,12 @@ public class MetaController extends BaseController {
      * @param    uuid    Required parameter: The uuid of the metadata schema item
      * @param    limit    Optional parameter: The maximum number of results returned from this query
      * @param    offset    Optional parameter: The number of results skipped in the result set returned from this query
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the List<PermissionModel> response from the API call*/
     public void listMetadataSchemaPermissionsAsync(
-                final String uuid,
-                final Integer limit,
-                final Integer offset,
-                final APICallBack<List<PermissionModel>> callBack
+            final String uuid,
+            final Integer limit,
+            final Integer offset,
+            final APICallBack<List<PermissionModel>> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -1457,14 +1398,14 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5533739774426916941L;
+            private static final long serialVersionUID = 5200156742648028597L;
             {
                     put( "uuid", uuid );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4814472442624136714L;
+            private static final long serialVersionUID = 5727575827296484230L;
             {
                     put( "naked", true );
                     put( "limit", (null != limit) ? limit : 100 );
@@ -1475,7 +1416,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5364791685193008611L;
+            private static final long serialVersionUID = 5502650847056396624L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -1484,34 +1425,31 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().get(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.get(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a schema UUID is not supplied or is invalid.", context);
+                                throw new APIException("Raised if a schema UUID is not supplied or is invalid.", 400, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified schema.", context);
+                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified schema.", 403, response.getRawBody());
 
                             else if (responseCode == 404)
-                                throw new APIException("The specified schema cannot be found", context);
+                                throw new APIException("The specified schema cannot be found", 404, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata schema database", context);
+                                throw new APIException("The service was unable to query the metadata schema database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             List<PermissionModel> result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -1546,12 +1484,11 @@ public class MetaController extends BaseController {
      * Add a user's permission for the given schema.
      * @param    body    Required parameter: The schema permission to update.
      * @param    uuid    Required parameter: The uuid of the metadata schema item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the PermissionModel response from the API call*/
     public void addMetadataSchemaPermissionAsync(
-                final PermissionModel body,
-                final String uuid,
-                final APICallBack<PermissionModel> callBack
+            final PermissionModel body,
+            final String uuid,
+            final APICallBack<PermissionModel> callBack
     ) throws JsonProcessingException {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -1562,14 +1499,14 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5757299008591583624L;
+            private static final long serialVersionUID = 4924550110179416594L;
             {
                     put( "uuid", uuid );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4853039810762375113L;
+            private static final long serialVersionUID = 5320180213435699282L;
             {
                     put( "naked", true );
             }});
@@ -1578,7 +1515,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5063892892097731346L;
+            private static final long serialVersionUID = 5592059182120972053L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -1588,34 +1525,31 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().postBody(queryUrl, headers, APIHelper.serialize(body));
+        final HttpRequest request = clientInstance.postBody(queryUrl, headers, APIHelper.serialize(body));
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a valid schema UUID is not supplied or if the form is invalid.", context);
+                                throw new APIException("Raised if a valid schema UUID is not supplied or if the form is invalid.", 400, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified schema.", context);
+                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified schema.", 403, response.getRawBody());
 
                             else if (responseCode == 404)
-                                throw new APIException("The specified user cannot be found", context);
+                                throw new APIException("The specified user cannot be found", 404, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata schema database", context);
+                                throw new APIException("The service was unable to query the metadata schema database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             PermissionModel result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -1649,11 +1583,10 @@ public class MetaController extends BaseController {
     /**
      * Deletes all permissions on the given schema.
      * @param    uuid    Required parameter: The uuid of the metadata schema item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the void response from the API call*/
     public void deleteClearMetadataSchemaPermissionsAsync(
-                final String uuid,
-                final APICallBack<Object> callBack
+            final String uuid,
+            final APICallBack<Object> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -1664,14 +1597,14 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4740680027313522555L;
+            private static final long serialVersionUID = 4816952090826007379L;
             {
                     put( "uuid", uuid );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5462944543806829259L;
+            private static final long serialVersionUID = 5378870707391449220L;
             {
                     put( "naked", true );
             }});
@@ -1680,7 +1613,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5277294693535833605L;
+            private static final long serialVersionUID = 5236171554998537695L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "Authorization", String.format("Bearer %1$s", Configuration.oAuthAccessToken) );
@@ -1688,31 +1621,28 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().delete(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.delete(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a schema UUID is not supplied or is invalid.", context);
+                                throw new APIException("Raised if a schema UUID is not supplied or is invalid.", 400, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified schema.", context);
+                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified schema.", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata schema database", context);
+                                throw new APIException("The service was unable to query the metadata schema database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //let the caller know of the success
                             callBack.onSuccess(context, context);
@@ -1740,12 +1670,11 @@ public class MetaController extends BaseController {
      * Get the user permission for this schema.
      * @param    username    Required parameter: The username of the permission owner
      * @param    uuid    Required parameter: The uuid of the metadata schema item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the PermissionModel response from the API call*/
     public void getMetadataSchemaPermissionAsync(
-                final String username,
-                final String uuid,
-                final APICallBack<PermissionModel> callBack
+            final String username,
+            final String uuid,
+            final APICallBack<PermissionModel> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -1756,7 +1685,7 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4976026573388189019L;
+            private static final long serialVersionUID = 4864656596223042670L;
             {
                     put( "username", username );
                     put( "uuid", uuid );
@@ -1764,7 +1693,7 @@ public class MetaController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5321301991452250052L;
+            private static final long serialVersionUID = 5441360358377975074L;
             {
                     put( "naked", true );
             }});
@@ -1773,7 +1702,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5431472885923637981L;
+            private static final long serialVersionUID = 5150468470518395647L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -1782,34 +1711,31 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().get(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.get(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a schema UUID is not supplied or is invalid.", context);
+                                throw new APIException("Raised if a schema UUID is not supplied or is invalid.", 400, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified schema.", context);
+                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified schema.", 403, response.getRawBody());
 
                             else if (responseCode == 404)
-                                throw new APIException("The specified schema cannot be found", context);
+                                throw new APIException("The specified schema cannot be found", 404, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata schema database", context);
+                                throw new APIException("The service was unable to query the metadata schema database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             PermissionModel result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -1845,13 +1771,12 @@ public class MetaController extends BaseController {
      * @param    body    Required parameter: The schema permission to update.
      * @param    username    Required parameter: The username of the permission owner
      * @param    uuid    Required parameter: The uuid of the metadata schema item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the PermissionModel response from the API call*/
     public void updateMetadataSchemaPermissionAsync(
-                final PermissionModel body,
-                final String username,
-                final String uuid,
-                final APICallBack<PermissionModel> callBack
+            final PermissionModel body,
+            final String username,
+            final String uuid,
+            final APICallBack<PermissionModel> callBack
     ) throws JsonProcessingException {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -1862,7 +1787,7 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5743860007122054207L;
+            private static final long serialVersionUID = 5545278237689612525L;
             {
                     put( "username", username );
                     put( "uuid", uuid );
@@ -1870,7 +1795,7 @@ public class MetaController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5214294750142906479L;
+            private static final long serialVersionUID = 5445787145524720959L;
             {
                     put( "naked", true );
             }});
@@ -1879,7 +1804,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5477528298304656606L;
+            private static final long serialVersionUID = 5097823641048849390L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -1889,34 +1814,31 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().postBody(queryUrl, headers, APIHelper.serialize(body));
+        final HttpRequest request = clientInstance.postBody(queryUrl, headers, APIHelper.serialize(body));
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a valid schema UUID is not supplied or if the form is invalid.", context);
+                                throw new APIException("Raised if a valid schema UUID is not supplied or if the form is invalid.", 400, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified schema.", context);
+                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified schema.", 403, response.getRawBody());
 
                             else if (responseCode == 404)
-                                throw new APIException("The specified user cannot be found", context);
+                                throw new APIException("The specified user cannot be found", 404, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata schema database", context);
+                                throw new APIException("The service was unable to query the metadata schema database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             PermissionModel result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -1951,12 +1873,11 @@ public class MetaController extends BaseController {
      * Deletes all metadata schema permissions on the given metadata.
      * @param    username    Required parameter: The username of the permission owner
      * @param    uuid    Required parameter: The uuid of the metadata schema item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the void response from the API call*/
     public void deleteSchemaPermissionAsync(
-                final String username,
-                final String uuid,
-                final APICallBack<Object> callBack
+            final String username,
+            final String uuid,
+            final APICallBack<Object> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -1967,7 +1888,7 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5438459559860739928L;
+            private static final long serialVersionUID = 5452910606004275700L;
             {
                     put( "username", username );
                     put( "uuid", uuid );
@@ -1975,7 +1896,7 @@ public class MetaController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 4699451859397542410L;
+            private static final long serialVersionUID = 4920041292960895030L;
             {
                     put( "naked", true );
             }});
@@ -1984,7 +1905,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4640551583236924548L;
+            private static final long serialVersionUID = 4902233799216035557L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "Authorization", String.format("Bearer %1$s", Configuration.oAuthAccessToken) );
@@ -1992,31 +1913,28 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().delete(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.delete(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a schema UUID is not supplied or is invalid.", context);
+                                throw new APIException("Raised if a schema UUID is not supplied or is invalid.", 400, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified schema.", context);
+                                throw new APIException("Failed to authenticate the user or the user is not authorized to access the specified schema.", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the metadata schema database", context);
+                                throw new APIException("The service was unable to query the metadata schema database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //let the caller know of the success
                             callBack.onSuccess(context, context);
@@ -2043,11 +1961,10 @@ public class MetaController extends BaseController {
     /**
      * Retrieve Metadata Schemata.
      * @param    uuid    Required parameter: The uuid of the metadata schema item
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the MetadataSchema response from the API call*/
     public void getMetadataSchemaAsync(
-                final String uuid,
-                final APICallBack<MetadataSchema> callBack
+            final String uuid,
+            final APICallBack<MetadataSchema> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -2058,14 +1975,14 @@ public class MetaController extends BaseController {
 
         //process template parameters
         APIHelper.appendUrlWithTemplateParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5316242907019002959L;
+            private static final long serialVersionUID = 5237865380264254424L;
             {
                     put( "uuid", uuid );
             }});
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5498448226854628144L;
+            private static final long serialVersionUID = 5231391721784193746L;
             {
                     put( "naked", true );
             }});
@@ -2074,7 +1991,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 5100946697032680949L;
+            private static final long serialVersionUID = 4909175423258539461L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -2083,31 +2000,28 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().get(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.get(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user does not supply a Schema UUID", context);
+                                throw new APIException("Raised if a user does not supply a Schema UUID", 400, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the schema database", context);
+                                throw new APIException("The service was unable to query the schema database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             MetadataSchema result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),
@@ -2143,13 +2057,12 @@ public class MetaController extends BaseController {
      * @param    q    Required parameter: A valid query object defining the search parameters.
      * @param    limit    Optional parameter: The maximum number of results returned from this query
      * @param    offset    Optional parameter: The number of results skipped in the result set returned from this query
-     * @return	Returns the void response from the API call 
-     */
+	 * @return	Returns the List<MetadataSchema> response from the API call*/
     public void listMetadataSchemaAsync(
-                final String q,
-                final Integer limit,
-                final Integer offset,
-                final APICallBack<List<MetadataSchema>> callBack
+            final String q,
+            final Integer limit,
+            final Integer offset,
+            final APICallBack<List<MetadataSchema>> callBack
     ) {
         //the base uri for api requests
         String baseUri = Configuration.baseUri;
@@ -2160,7 +2073,7 @@ public class MetaController extends BaseController {
 
         //process query parameters
         APIHelper.appendUrlWithQueryParameters(queryBuilder, new HashMap<String, Object>() {
-            private static final long serialVersionUID = 5736428409268271507L;
+            private static final long serialVersionUID = 4710675330057045029L;
             {
                     put( "naked", true );
                     put( "q", q );
@@ -2172,7 +2085,7 @@ public class MetaController extends BaseController {
 
         //load all headers for the outgoing API request
         Map<String, String> headers = new HashMap<String, String>() {
-            private static final long serialVersionUID = 4714020917878421957L;
+            private static final long serialVersionUID = 4668849341918118540L;
             {
                     put( "user-agent", "agave-client-sdk" );
                     put( "accept", "application/json" );
@@ -2181,31 +2094,28 @@ public class MetaController extends BaseController {
         };
 
         //prepare and invoke the API call request to fetch the response
-        final HttpRequest request = getClientInstance().get(queryUrl, headers, null);
+        final HttpRequest request = clientInstance.get(queryUrl, headers, null);
 
         //invoke request and get response
         Runnable responseTask = new Runnable() {
             public void run() {
                 //make the API call
-                getClientInstance().executeAsStringAsync(request, new APICallBack<HttpResponse>() {
+                clientInstance.executeAsStringAsync(request, new APICallBack<HttpResponse>() {
                     public void onSuccess(HttpContext context, HttpResponse response) {
                         try {
                             //Error handling using HTTP status codes
                             int responseCode = response.getStatusCode();
                             if (responseCode == 400)
-                                throw new APIException("Raised if a user does not supply a Schema UUID", context);
+                                throw new APIException("Raised if a user does not supply a Schema UUID", 400, response.getRawBody());
 
                             else if (responseCode == 403)
-                                throw new APIException("Failed to authenticate the user", context);
+                                throw new APIException("Failed to authenticate the user", 403, response.getRawBody());
 
                             else if (responseCode == 500)
-                                throw new APIException("The service was unable to query the schema database", context);
+                                throw new APIException("The service was unable to query the schema database", 500, response.getRawBody());
 
                             else if ((responseCode < 200) || (responseCode > 206)) //[200,206] = HTTP OK
-                                throw new APIException("HTTP Response Not OK", context);
-
-                            //handle errors defined at the API level
-                            validateResponse(response, context);
+                                throw new APIException("HTTP Response Not OK", responseCode, response.getRawBody());
 
                             //extract result from the http response
                             List<MetadataSchema> result = APIHelper.deserialize(((HttpStringResponse)response).getBody(),

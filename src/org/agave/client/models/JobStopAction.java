@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.models;
 
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class JobStopAction 
         extends JobAction {
-    private static final long serialVersionUID = 4944523735828683664L;
+    private static final long serialVersionUID = 5484060149345788750L;
     private JobActionTypeEnum action = JobActionTypeEnum.fromString("STOP");
     /** GETTER
      * TODO: Write general description for this method

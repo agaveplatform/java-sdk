@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.models;
 
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class JobResubmitAction 
         extends JobAction {
-    private static final long serialVersionUID = 4675676340859809866L;
+    private static final long serialVersionUID = 5523387359098859500L;
     private JobActionTypeEnum action = JobActionTypeEnum.fromString("RESUBMIT");
     /** GETTER
      * TODO: Write general description for this method

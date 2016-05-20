@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.models;
 
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class MetadataSchema 
         implements java.io.Serializable {
-    private static final long serialVersionUID = 4654907967656414650L;
+    private static final long serialVersionUID = 5634828912430688776L;
     private Date created;
     private String internalUsername;
     private Date lastUpdated;

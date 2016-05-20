@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.models;
 
@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 public class ApplicationParameterFlagValue 
         extends AbstractApplicationParameterValue {
-    private static final long serialVersionUID = 4864942269043933089L;
+    private static final long serialVersionUID = 5170351910908699216L;
     private String type = "flag";
     /** GETTER
      * The primary type of this parameter

@@ -1,7 +1,7 @@
 /*
  * Agave
  *
- * This file was automatically generated for Agave Platform Client SDK by APIMATIC v2.0 on 04/25/2016
+ * This file was automatically generated for Agave Platform Client SDK by APIMATIC BETA v2.0 on 05/20/2016
  */
 package org.agave.client.http.client;
 
@@ -29,7 +29,7 @@ public class HttpContext {
      * GETTER for the Http Response
      * @return HttpResponse response
      */
-    public HttpResponse getResponse() {
+    public HttpResponse getRespone() {
         return _response;
     }
 }
